@@ -1,4 +1,4 @@
-import cv2.cv as cv
+from cv2 import cv
 
 
 
