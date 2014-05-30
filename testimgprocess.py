@@ -3,6 +3,8 @@ import numpy as np
 
 
 kernel = np.ones((5, 5), np.uint8)
+
+
 img = cv2.imread("test.jpg")
 gray = cv2.cvtColor(img, cv2.cv.CV_BGR2GRAY)
 ret, th = cv2.threshold(gray, 127, 255, cv2.THRESH_BINARY)
