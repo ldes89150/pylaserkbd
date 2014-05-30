@@ -18,7 +18,7 @@ for cnt in contours:
 
 
 for charpt in charpts:
-    cv2.circle(img, charpt, 5, (0, 0, 255), -1)         
+    cv2.circle(img, charpt, 2, (0, 0, 255), -1)         
 
 
 
