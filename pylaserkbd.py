@@ -31,7 +31,7 @@ class CAM():
     
     def retrieve(self):
         '''process the image and return a list contours and a list including tuples of characteristic point
-        ex: [contours],[(p1x,p1y),(p2x,p2y),...(pnx,pny)]'''
+        ex: [(p1x,p1y),(p2x,p2y),...(pnx,pny)],[contours]'''
         processed_img = self.__process()
         contours, hierarchy = cv2.findContours(processed_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)
         charpts = []
