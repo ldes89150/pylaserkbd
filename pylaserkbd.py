@@ -3,25 +3,25 @@ import numpy as np
 import scipy as sp
 
 class CAM():
-    def __init__(self,camid):
-        self.camid=camid
-        self.cap=cv2.VideoCapture(self.camid)
+    def __init__(self, camid):
+        self.camid = camid
+        self.cap = cv2.VideoCapture(self.camid)
         self.img = None
         self.ret = None
         self.contour = None    
         
-        #image processing parameters
+        # image processing parameters
         self.thresh = 127
         self.dilate_iterations = 2
         self.kernel = np.ones((5, 5), np.uint8)
     
-    def query_from_file(self,img_path):
+    def query_from_file(self, img_path):
         '''test from stored file'''
         self.img = cv2.imread(img_path)
             
     def query(self):
         '''query an image from camera'''
-        self.ret,self.img = self.cap.read()
+        self.ret, self.img = self.cap.read()
     
     def __process(self): 
         grey = cv2.cvtColor(self.img, cv2.cv.CV_BGR2GRAY)
@@ -50,3 +50,4 @@ class mapping():
 def make_mapping_function():
     '''setup and return a mapping function object'''
     pass
+
