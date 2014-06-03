@@ -40,7 +40,7 @@ class CAM():
             charpts.append((int(mt['m10'] / mt['m00']), int(mt['m01'] / mt['m00'])))
         return charpts, contours
 
-	def show(self, charpts, contours):
+    def show(self, charpts, contours):
         cv2.drawContours(self.img, contours, -1, (0, 255, 0), 1)
         for charpt in charpts:
             cv2.circle(self.img, charpt, 2, (0, 0, 255), -1)
