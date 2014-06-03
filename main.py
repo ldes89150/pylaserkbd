@@ -23,7 +23,7 @@ class configuration():
             '''try to load configuration'''
         except:
             pass
-            #assert 
+            #raise assertion error 
 if __name__  == '__main__':
     config= configuration()
     try:
