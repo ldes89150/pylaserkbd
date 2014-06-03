@@ -55,6 +55,8 @@ class mapping():
         pass
 
 def make_mapping_function():
-    '''setup and return a mapping function object'''
+    '''setup and return a mapping function object, for example, 
+    if we give this function enough pairs of coordinates between
+     images and desktop surface.'''
     pass
 
