@@ -3,16 +3,17 @@ import numpy as np
 import scipy as sp
 
 class CAM():
-    def __init__(self, camid):
+    def __init__(self, camid, thresh = 127, dilate_iterations = 2):
         self.camid = camid
         self.cap = cv2.VideoCapture(self.camid)
         self.img = None
         self.ret = None
-        self.contour = None    
+        self.contours = None
+        self.charpts = None
         
         # image processing parameters
-        self.thresh = 127
-        self.dilate_iterations = 2
+        self.thresh = thresh
+        self.dilate_iterations = dilate_iterations
         self.kernel = np.ones((5, 5), np.uint8)
     
     def query_from_file(self, img_path):
@@ -24,8 +25,8 @@ class CAM():
         self.ret, self.img = self.cap.read()
     
     def __process(self): 
-        grey = cv2.cvtColor(self.img, cv2.cv.CV_BGR2GRAY)
-        ret, th = cv2.threshold(grey, self.thresh, 255, cv2.THRESH_BINARY)
+        gray = cv2.cvtColor(self.img, cv2.COLOR_BGR2GRAY)
+        ret, th = cv2.threshold(gray, self.thresh, 255, cv2.THRESH_BINARY)
         dila = cv2.dilate(th, self.kernel, iterations=self.dilate_iterations)
         return dila
     
@@ -38,25 +39,33 @@ class CAM():
         for cnt in contours:
             mt = cv2.moments(cnt)
             charpts.append((int(mt['m10'] / mt['m00']), int(mt['m01'] / mt['m00'])))
+        self.contours = contours
+        self.charpts = charpts
         return charpts, contours
-
-    def show(self, charpts, contours):
-        cv2.drawContours(self.img, contours, -1, (0, 255, 0), 1)
-        for charpt in charpts:
+    def release(self):
+        self.cap.release()
+    def show(self):
+        cv2.drawContours(self.img, self.contours, -1, (0, 255, 0), 1)
+        for charpt in self.charpts:
             cv2.circle(self.img, charpt, 2, (0, 0, 255), -1)
         # Display the resulting frame
         cv2.imshow('frame',self.img)
+        
 
 class mapping():
-    def __init__(self):
-        '''store the mapping parameters (ex: transformation matrix)'''
+    def __init__(self, corner_position):
+        self.origin = corner_position[2]
+        self.x_length = corner_position[3][0] - corner_position[2][0]
+        self.y_length = corner_position[0][1] - corner_position[2][1]
+        self.position = None
         pass
-    def __call__(self, px, py):
-        pass
+    def __call__(self, position):
+        delta_x = position[0] - self.origin[0]
+        delta_y = position[1] - self.origin[1]
+        if self.x_length > delta_x and self.y_length > delta_y and delta_x > 0 and delta_y > 0:
+            self.position = np.array([delta_x / self.x_length * 14., delta_y / self.y_length * 2. ])
+        return self.position
 
-def make_mapping_function():
-    '''setup and return a mapping function object, for example, 
-    if we give this function enough pairs of coordinates between
-     images and desktop surface.'''
+def make_mapping_function(position):
+    '''setup and return a mapping function object'''
     pass
-
