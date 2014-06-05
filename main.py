@@ -5,6 +5,7 @@ import cv2
 import numpy as np
 import time
 import pylaserkbd
+import system
 
 class configuration():
     def __init__(self, camid):
@@ -19,7 +20,7 @@ class configuration():
         while check == 'n':
             thresh = input('Please input thresh light power:')
             dilate_iterations = input('Please input dilate interations:')
-            print 'Please touch the laser keyboard.'
+            print 'Please touch the laser keyboard.(press q to close the camera)'
             time.sleep(1)
             self.cam = pylaserkbd.CAM(self.camid, thresh, dilate_iterations)
             for i in range(100):
@@ -37,14 +38,15 @@ class configuration():
         corner = ['左上角', '右上角', '左下角', '右下角']
         for n in range(4):
             print 'Please put your finger at', corner[n]
-            time.sleep(2)
+            system("pause")#press any key to continue
+			#time.sleep(2)
             img = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
             img.query()
             charpts, contours = img.retrieve()
             print 'Ok, you can leave yuor finger.'
             #self.corner_position[n] = charpts
             img.release()
-            time.sleep(2)
+            #time.sleep(2)
         print 'Calibration done.'
     def save(self):
         #save configuration paraeters to file
