@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-#This file provide a GUI interference for using pylaserkbd module.
+# This file provide a GUI interference for using pylaserkbd module.
 
 import cv2
 import numpy as np
@@ -9,7 +9,7 @@ import os
 
 class configuration():
     def __init__(self, camid):
-        self.key_fire_interval = 0.5#seconds
+        self.key_fire_interval = 0.5  # seconds
         self.camid = camid
         self.cam = None
         self.thresh = 127
@@ -38,27 +38,27 @@ class configuration():
         corner = ['左上角', '右上角', '左下角', '右下角']
         for n in range(4):
             print 'Please put your finger at', corner[n]
-            os.system("pause")#press any key to continue
-			#time.sleep(2)
+            os.system("pause")  # press any key to continue
+            # time.sleep(2)
             img = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
             img.query()
             charpts, contours = img.retrieve()
             print 'Ok, you can leave yuor finger.'
-            #self.corner_position[n] = charpts
+            # self.corner_position[n] = charpts
             img.release()
-            #time.sleep(2)
+            # time.sleep(2)
         print 'Calibration done.'
     def save(self):
-        #save configuration paraeters to file
+        # save configuration paraeters to file
         pass
     def load(self):
         try:
             '''try to load configuration'''
         except:
             pass
-            #raise assertion error 
-if __name__  == '__main__':
-    config= configuration()
+            # raise assertion error 
+if __name__ == '__main__':
+    config = configuration()
     try:
         config.load()
         '''try to load the configuration from file.'''
