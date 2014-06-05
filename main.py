@@ -5,7 +5,7 @@ import cv2
 import numpy as np
 import time
 import pylaserkbd
-import system
+import os
 
 class configuration():
     def __init__(self, camid):
@@ -38,7 +38,7 @@ class configuration():
         corner = ['左上角', '右上角', '左下角', '右下角']
         for n in range(4):
             print 'Please put your finger at', corner[n]
-            system("pause")#press any key to continue
+            os.system("pause")#press any key to continue
 			#time.sleep(2)
             img = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
             img.query()
