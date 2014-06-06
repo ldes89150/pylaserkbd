@@ -13,7 +13,7 @@ class configuration():
         self.camid = camid
         self.thresh = 127
         self.dilate_iterations = 2
-        self.corner_position = np.zeros((4, 2))
+        self.corner_position = []
 
     def config_CAM_parameters(self):
         check = 'n'
@@ -23,7 +23,7 @@ class configuration():
             print 'Please touch the laser keyboard.(press q to close the camera)'
             time.sleep(1)
             cam = pylaserkbd.CAM(self.camid, thresh, dilate_iterations)
-            for i in range(100):
+            while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()
                 cam.show()
@@ -36,15 +36,20 @@ class configuration():
 
     def mapping_calibration(self):
         corner = ['左上角', '右上角', '左下角', '右下角']
-        for n in range(4):
-            print 'Please put your finger at', corner[n]
-            os.system("pause")  # press any key to continue
-            img = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
-            img.query()
-            charpts, contours = img.retrieve()
+        for i in range(4):
+            print 'Please put your finger at', corner[i]
+            raw_input('Press enter if you are ready.')
+            cam = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
+            while(True):
+                cam.query()
+                charpts, contours = cam.retrieve()
+                cam.show()
+                if cv2.waitKey(1) & 0xFF == ord('q'):
+                    break
+            cam.close()
             print 'Ok, you can leave yuor finger.'
-            self.corner_position[n] = charpts
-            img.release()
+            self.corner_position.append(charpts)
+        print self.corner_position
         print 'Calibration done.'
 
     def save(self):
@@ -70,4 +75,5 @@ if __name__ == '__main__':
         config.save()
     cam = pylaserkbd.CAM(config.camid)
     while time.sleep(config.key_fire_interval):
-        
+        piano_tone = cam.make_mapping_function(config.corner_position)
+        print piano_tone
