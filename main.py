@@ -86,8 +86,8 @@ class configuration():
 if __name__ == '__main__':
     config = configuration(1)
     try:
-        config.load()
         '''try to load the configuration from file.'''
+        config.load()
     except:
         '''if there is no configuration file, start'''
         config.config_CAM_parameters()
