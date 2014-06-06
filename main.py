@@ -6,6 +6,9 @@ import numpy as np
 import time
 import pylaserkbd
 import os
+def pause():
+    
+    raw_input()
 
 class configuration():
     def __init__(self, camid):

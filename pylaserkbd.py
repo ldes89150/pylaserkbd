@@ -3,7 +3,7 @@ import numpy as np
 import scipy as sp
 
 class CAM():
-    def __init__(self, camid, thresh = 115, dilate_iterations = 2):
+    def __init__(self, camid, thresh = 80, dilate_iterations = 3):
         self.camid = camid
         self.cap = cv2.VideoCapture(self.camid)
         self.img = None
@@ -33,10 +33,10 @@ class CAM():
     def mapping(self, corner_position):
         kb_high = corner_position[2][1] - corner_position[0][1]
         kb_length = corner_position[1][0] - corner_position[0][0]
-        pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2]])
-        pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high]])
-        M = cv2.getAffineTransform(pts1, pts2)
-        self.img = cv2.warpAffine(self.img, M, (kb_length, kb_high))
+        pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
+        pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high], [kb_length, kb_high]])
+        M = cv2.getPerspectiveTransform(pts1, pts2)
+        self.img = cv2.warpPerspective(self.img, M, (kb_length, kb_high))
         return kb_length
 
     def retrieve(self):
@@ -63,6 +63,19 @@ class CAM():
         # Display the resulting frame
         cv2.imshow('frame',self.img)
 
-    def make_mapping_function(self, corner_position):
-        piano_tone = []
-        return piano_tone
+class mapping():
+    def __init__(self):
+        self.M = None
+
+    def __call__(self, px, py):
+        v = np.dot(self.M, np.array([px, py, 1]))
+        return v[0]/v[2], v[1]/v[2]
+
+def make_mapping_function(corner_position):
+    function = mapping()
+    kb_high = corner_position[2][1] - corner_position[0][1]
+    kb_length = corner_position[1][0] - corner_position[0][0]
+    pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
+    pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high], [kb_length, kb_high]])
+    function.M = cv2.getPerspectiveTransform(pts1, pts2)
+    return function
