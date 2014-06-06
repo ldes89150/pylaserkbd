@@ -48,6 +48,9 @@ class configuration():
         print 'Calibration done.'
 
     def save(self):
+        
+        
+        
         # save configuration paraeters to file
         pass
 
@@ -60,6 +63,7 @@ class configuration():
 
 if __name__ == '__main__':
     config = configuration(1)
+    config.save()
     try:
         config.load()
         '''try to load the configuration from file.'''
@@ -70,4 +74,5 @@ if __name__ == '__main__':
         config.save()
     cam = pylaserkbd.CAM(config.camid)
     while time.sleep(config.key_fire_interval):
+        pass
         
