@@ -3,7 +3,7 @@ import numpy as np
 import scipy as sp
 
 class CAM():
-    def __init__(self, camid, thresh = 80, dilate_iterations = 3):
+    def __init__(self, camid, thresh = 127, dilate_iterations = 2):
         self.camid = camid
         self.cap = cv2.VideoCapture(self.camid)
         self.img = None
@@ -71,11 +71,15 @@ class mapping():
         v = np.dot(self.M, np.array([px, py, 1]))
         return v[0]/v[2], v[1]/v[2]
 
-def make_mapping_function(corner_position):
+def make_mapping_function_kbdmode(corner_position):
     function = mapping()
-    kb_high = corner_position[2][1] - corner_position[0][1]
-    kb_length = corner_position[1][0] - corner_position[0][0]
     pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
-    pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high], [kb_length, kb_high]])
+    pts2 = np.float32([[0, 0], [500, 0], [80, 300], [420, 300]])
+    function.M = cv2.getPerspectiveTransform(pts1, pts2)
+    return function
+def make_mapping_function_pianomode(corner_position):
+    function = mapping()
+    pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
+    pts2 = np.float32([[0, 0], [300, 0], [0, 180], [300, 180]])
     function.M = cv2.getPerspectiveTransform(pts1, pts2)
     return function
