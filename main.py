@@ -7,8 +7,9 @@ import time
 import pylaserkbd
 import os
 def pause():
-    
+    print "Press Enter to continue."
     raw_input()
+    return
 
 class configuration():
     def __init__(self, camid):
@@ -16,7 +17,7 @@ class configuration():
         self.camid = camid
         self.thresh = 127
         self.dilate_iterations = 2
-        self.corner_position = []
+        self.corner_position = [(1,0),(2,0.0)]
 
     def config_CAM_parameters(self):
         check = 'n'
@@ -56,21 +57,37 @@ class configuration():
         print 'Calibration done.'
 
     def save(self):
-        # save configuration paraeters to file
-        pass
+        # save configuration parameters to file
+        fout=open('config.cfg','w')
+        parameters=['key_fire_interval',
+                    'camid',
+                    'thresh',
+                    'dilate_iterations',
+                    'corner_position']
+        for parameter in parameters:
+            value=None
+            exec("value=self.{0}".format(parameter))
+            fout.write(parameter+' = '+str(value)+'\n')
+        fout.close()
 
     def load(self):
+        # save configuration parameters to file
         try:
-            '''try to load configuration'''
-        except:
-            pass
-            # raise assertion error 
+            fin=open('config.cfg','r')
+            for s in fin.readlines():
+                s=s.strip('\n').split('=')
+                exec('self.{0}={1}'.format(s[0],s[1]))
+            fin.close()
+        except Exception as err:
+            print err
+            # raise assertion error
+            assert False,"config.cfg not found!!"
 
 if __name__ == '__main__':
     config = configuration(1)
     try:
-        config.load()
         '''try to load the configuration from file.'''
+        config.load()
     except:
         '''if there is no configuration file, start'''
         config.config_CAM_parameters()
