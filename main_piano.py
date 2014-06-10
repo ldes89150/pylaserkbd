@@ -30,7 +30,7 @@ if __name__ == '__main__':
         config.config_all()
         config.save('config_piano.cfg')
     #use parameters in config to setup
-    cam = pylaserkbd.CAM(config.camid)
+    cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
     while(True):
         cam.query()
         charpts, contours = cam.retrieve()

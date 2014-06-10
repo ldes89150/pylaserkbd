@@ -23,7 +23,7 @@ if __name__ == '__main__':
         config.config_all()
         config.save()
     #use parameters in config to setup
-    cam = pylaserkbd.CAM(config.camid)
+    cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
     func = pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
     
     #Please finish this part, Tony
