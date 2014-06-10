@@ -15,12 +15,13 @@ sudo apt-get install libopencv-dev python-numpy
 ```
 
 ### python package
-#### [PyUserInput](https://github.com/SavinaRoja/PyUserInput):You may also check its dependencies.
+#### [PyUserInput](https://github.com/SavinaRoja/PyUserInput)
 ```
 git clone https://github.com/SavinaRoja/PyUserInput.git
 cd PyUserInput
-python setup.py --install
+python setup.py install
 ```
+You may also want to check the dependencies of PyUserInput.
 - Linux: Xlib
 ```
 pip install svn+https://python-xlib.svn.sourceforge.net/svnroot/python-xlib/trunk/
