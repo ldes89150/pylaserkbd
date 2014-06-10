@@ -3,7 +3,7 @@ import numpy as np
 import scipy as sp
 
 class CAM():
-    def __init__(self, camid, thresh = 127, dilate_iterations = 2):
+    def __init__(self, camid, thresh = 127, dilate_iterations = 3):
         self.camid = camid
         self.cap = cv2.VideoCapture(self.camid)
         self.img = None
