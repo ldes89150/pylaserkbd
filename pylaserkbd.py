@@ -95,7 +95,7 @@ def pause():
     return
 
 class configuration():
-    def __init__(self, camid):
+    def __init__(self, camid = 1):
         self.key_fire_interval = 0.5  # seconds
         self.camid = camid
         self.thresh = 127
