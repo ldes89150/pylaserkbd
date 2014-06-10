@@ -13,5 +13,13 @@ This makes our code be able to run on OS with Python and OpenCV.
 ```
 sudo apt-get install libopencv-dev python-numpy
 ```
+
+### python package
+- [PyUserInput](https://github.com/SavinaRoja/PyUserInput)
+```
+git clone https://github.com/SavinaRoja/PyUserInput.git
+cd PyUserInput
+python setup.py --install
+```
 ## Flow Chart
 ![Flow Chart](https://docs.google.com/drawings/d/1k_QXaa3FdJokMQoF_Lo1fDbnYydQrn7BCmn4QK0cIOw/pub?w=960&h=720)

@@ -6,11 +6,12 @@ import numpy as np
 import time
 import pylaserkbd
 import os
+from pykeyboard import PyKeyboard
+k=PyKeyboard()
 
-def type_char(character):
-    #no implementaion now
-    print character
-    pass
+
+def type_string(*args):
+	return k.type_string(*args)
 
 if __name__ == '__main__':
     config = pylaserkbd.configuration(1)
