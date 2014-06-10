@@ -14,7 +14,6 @@ def type_char(character):
 
 if __name__ == '__main__':
     config = pylaserkbd.configuration(1)
-    config.save()
     try:
         '''try to load the configuration from file.'''
         config.load()
