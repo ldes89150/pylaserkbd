@@ -15,11 +15,15 @@ sudo apt-get install libopencv-dev python-numpy
 ```
 
 ### python package
-- [PyUserInput](https://github.com/SavinaRoja/PyUserInput)
+#### [PyUserInput](https://github.com/SavinaRoja/PyUserInput):You may also check its dependencies.
 ```
 git clone https://github.com/SavinaRoja/PyUserInput.git
 cd PyUserInput
 python setup.py --install
+```
+- Linux: Xlib
+```
+pip install svn+https://python-xlib.svn.sourceforge.net/svnroot/python-xlib/trunk/
 ```
 ## Flow Chart
 ![Flow Chart](https://docs.google.com/drawings/d/1k_QXaa3FdJokMQoF_Lo1fDbnYydQrn7BCmn4QK0cIOw/pub?w=960&h=720)
