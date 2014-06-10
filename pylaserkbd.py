@@ -1,6 +1,8 @@
 import cv2
 import numpy as np
 import scipy as sp
+import time
+
 
 class CAM():
     def __init__(self, camid, thresh=127, dilate_iterations=3):
@@ -106,7 +108,7 @@ class configuration():
             dilate_iterations = input('Please input dilate interations:')
             print 'Please touch the laser keyboard.(press q to close the camera)'
             time.sleep(1)
-            cam = pylaserkbd.CAM(self.camid, thresh, dilate_iterations)
+            cam = CAM(self.camid, thresh, dilate_iterations)
             while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()
@@ -123,7 +125,7 @@ class configuration():
         for i in range(4):
             print 'Please put your finger at', corner[i]
             raw_input('Press enter if you are ready.')
-            cam = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
+            cam = CAM(self.camid, self.thresh, self.dilate_iterations)
             while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()
