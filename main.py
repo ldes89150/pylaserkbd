@@ -14,7 +14,6 @@ def type_char(character):
 
 if __name__ == '__main__':
     config = pylaserkbd.configuration(1)
-    config.save()
     try:
         '''try to load the configuration from file.'''
         config.load()
@@ -25,7 +24,7 @@ if __name__ == '__main__':
         config.save()
     #use parameters in config to setup
     cam = pylaserkbd.CAM(config.camid)
-    func=pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
+    func = pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
     
     #Please finish this part, Tony
     ''' 

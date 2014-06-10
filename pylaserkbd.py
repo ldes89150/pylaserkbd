@@ -1,3 +1,4 @@
+# -*- coding: UTF-8 -*-
 import cv2
 import numpy as np
 import scipy as sp
@@ -142,24 +143,28 @@ class configuration():
         self.config_CAM_parameters()
         self.mapping_calibration()
 
-    def save(self):
+    def save(self, filepath = None):
         # save configuration parameters to file
-        fout = open('config.cfg', 'w')
+        if not filepath:
+            filepath = 'config.cfg'
+        fout = open(filepath, 'w')
         parameters = ('key_fire_interval',
-                    'camid',
-                    'thresh',
-                    'dilate_iterations',
-                    'corner_position')
+                      'camid',
+                      'thresh',
+                      'dilate_iterations',
+                      'corner_position')
         for parameter in parameters:
             value = None
             exec("value=self.{0}".format(parameter))
             fout.write(parameter + ' = ' + str(value) + '\n')
         fout.close()
 
-    def load(self):
+    def load(self, filepath = None):
         # save configuration parameters to file
         try:
-            fin = open('config.cfg', 'r')
+            if not filepath:
+                filepath = 'config.cfg'
+            fin = open(filepath, 'r')
             for s in fin.readlines():
                 s = s.strip('\n').split('=')
                 exec('self.{0}={1}'.format(s[0], s[1]))
@@ -167,4 +172,4 @@ class configuration():
         except Exception as err:
             print err
             # raise assertion error
-            assert False, "config.cfg not found!!"
+            assert False, "File not found!!"

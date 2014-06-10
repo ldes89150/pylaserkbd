@@ -139,7 +139,7 @@ def find_kbd(charpts, output, current_his):
             print output
 >>>>>>> 19654f65e3a476674727e876178eaaab0792c835
         else:
-                print '(%d, %d)' % (int(p[0]), int(p[1]))    
+            print '(%d, %d)' % (int(p[0]), int(p[1]))    
     if current != '' and current != current_his[0] :
         current_his[0] = current
         output.append(current)        
