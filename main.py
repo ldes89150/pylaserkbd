@@ -71,6 +71,7 @@ class configuration():
         fout.close()
 
 
+
     def load(self):
         # save configuration parameters to file
         try:
