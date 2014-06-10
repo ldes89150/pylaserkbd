@@ -92,13 +92,12 @@ if __name__ == '__main__':
         '''try to load the configuration from file.'''
         config.load()
     except AssertionError:
-        '''if there is no configuration file, start'''
-	print "No existing configuration found!"
-	config.config_CAM_parameters()
+        #if there is no configuration file, start
+        print "No existing configuration found!"
+        config.config_CAM_parameters()
         config.mapping_calibration()
         config.save()
     cam = pylaserkbd.CAM(config.camid)
     while time.sleep(config.key_fire_interval):
         piano_tone = cam.make_mapping_function(config.corner_position)
         print piano_tone
-
