@@ -77,7 +77,7 @@ def find_kbd(charpts, output, current_his):
                 del output[len(output) - 1]
                 print output
         else:
-                print '(%d, %d)' % (int(p[0]), int(p[1]))    
+            print '(%d, %d)' % (int(p[0]), int(p[1]))    
     if current != '' and current != current_his[0] :
         current_his[0] = current
         output.append(current)        
