@@ -4,7 +4,6 @@ import numpy as np
 import scipy as sp
 import time
 
-
 class CAM():
     def __init__(self, camid, thresh=127, dilate_iterations=3):
         self.camid = camid
@@ -174,3 +173,15 @@ class configuration():
             print err
             # raise assertion error
             assert False, "File not found!!"
+
+def find_tone(func, charpts):
+    tones = []
+    ps = []    
+    for charpt in charpts:
+        if not(func(*charpt)[0] < 0 or func(*charpt)[0] > 300 or func(*charpt)[1] > 180 or func(*charpt)[1] < 0):
+            ps.append(func(*charpt))
+    for p in ps:
+        col = int(14 * p[0] / 300)
+        raw = int(2 * p[1] / 180)
+        tones.append([col, raw])
+    return tones
