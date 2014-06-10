@@ -59,11 +59,11 @@ class configuration():
     def save(self):
         # save configuration parameters to file
         fout=open('config.cfg','w')
-        parameters=['key_fire_interval',
+        parameters=('key_fire_interval',
                     'camid',
                     'thresh',
                     'dilate_iterations',
-                    'corner_position']
+                    'corner_position')
         for parameter in parameters:
             value=None
             exec("value=self.{0}".format(parameter))
@@ -88,9 +88,10 @@ if __name__ == '__main__':
     try:
         '''try to load the configuration from file.'''
         config.load()
-    except:
+    except AssertionError:
         '''if there is no configuration file, start'''
-        config.config_CAM_parameters()
+	print "No existing configuration found!"
+	config.config_CAM_parameters()
         config.mapping_calibration()
         config.save()
     cam = pylaserkbd.CAM(config.camid)
