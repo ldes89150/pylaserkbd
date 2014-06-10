@@ -50,9 +50,9 @@ def find_kbd(charpts, output, current_his):
         elif p[0] < 317 and p[0] > 286:
             current = 'j'
         elif p[0] < 348 and p[0] > 317:
-                current = 'k'    
+            current = 'k'    
         elif p[0] < 380 and p[0] > 348:
-                current = 'l'
+            current = 'l'
     elif row > 3 and row < 4:
         if p[0] < 122 and p[0] > 90:
             current = 'q'
