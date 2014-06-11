@@ -6,12 +6,7 @@ import numpy as np
 import time
 import pylaserkbd
 import os
-from pykeyboard import PyKeyboard
-k=PyKeyboard()
 
-
-def type_string(*args):
-	return k.type_string(*args)
 
 if __name__ == '__main__':
     config = pylaserkbd.configuration(1)
@@ -26,10 +21,12 @@ if __name__ == '__main__':
     #use parameters in config to setup
     cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
     func = pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
-    
-    #Please finish this part, Tony
-    ''' 
-    while time.sleep(config.key_fire_interval):
-        piano_tone = cam.make_mapping_function(config.corner_position)
-        print piano_tone
-    '''
+    handler = pylaserkbd.kbd_event_handler()
+    while True:
+        cam.query()
+        charpts, contours = cam.retrieve()
+        keys=pylaserkbd.find_kbd(func,charpts)
+        handler(keys)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cam.close()
+            break

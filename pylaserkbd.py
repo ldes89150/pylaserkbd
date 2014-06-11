@@ -3,6 +3,12 @@ import cv2
 import numpy as np
 import scipy as sp
 import time
+from pykeyboard import PyKeyboard
+
+k=PyKeyboard()
+STATE = []
+
+
 
 class CAM():
     def __init__(self, camid, thresh=127, dilate_iterations=3):
@@ -175,6 +181,7 @@ class configuration():
             assert False, "File not found!!"
 
 def find_tone(func, charpts):
+    
     tones = []
     ps = []    
     for charpt in charpts:
@@ -185,3 +192,90 @@ def find_tone(func, charpts):
         raw = int(2 * p[1] / 180)
         tones.append([col, raw])
     return tones
+
+
+def find_kbd(func,charpts):
+    outputs=[]
+    kbds=[]
+    current=''
+    for charpt in charpts:
+        if not(func(*charpt)[0] < 0 or func(*charpt)[0] > 500 or func(*charpt)[1] > 300 or func(*charpt)[1] < 0):
+            kbds.append(func(*charpt))
+    for p in kbds:       
+        row = (5 * p[1] / 300)        
+        if row > 1 and row < 2:
+            if p[0] < 146 and p[0] > 114:
+                current = 'z'
+            elif p[0] < 178 and p[0] > 146:  
+                current = 'x'
+            elif p[0] < 210 and p[0] > 178:
+                current = 'c'
+            elif p[0] < 242 and p[0] > 210:
+                current = 'v'
+            elif p[0] < 274 and p[0] > 242:
+                current = 'b'
+            elif p[0] < 306 and p[0] > 274:
+                current = 'n'
+            elif p[0] < 338 and p[0] > 306:
+                current = 'm'
+        elif row > 2 and row < 3:
+            if p[0] < 131 and p[0] > 100:
+                current = 'a'
+            elif p[0] < 162 and p[0] > 131:  
+                current = 's'
+            elif p[0] < 193 and p[0] > 162:
+                current = 'd'
+            elif p[0] < 224 and p[0] > 193:
+                current = 'f'
+            elif p[0] < 255 and p[0] > 224:
+                current = 'g'
+            elif p[0] < 286 and p[0] > 255:
+                current = 'h'
+            elif p[0] < 317 and p[0] > 286:
+                current = 'j'
+            elif p[0] < 348 and p[0] > 317:
+                    current = 'k'    
+            elif p[0] < 380 and p[0] > 348:
+                    current = 'l'
+        elif row > 3 and row < 4:
+            if p[0] < 122 and p[0] > 90:
+                current = 'q'
+            elif p[0] < 154 and p[0] > 122:  
+                current = 'w'
+            elif p[0] < 186 and p[0] > 154:
+                current = 'e'
+            elif p[0] < 218 and p[0] > 186:
+                current = 'r'
+            elif p[0] < 250 and p[0] > 218:
+                current = 't'
+            elif p[0] < 282 and p[0] > 250:
+                current = 'y'
+            elif p[0] < 314 and p[0] > 282:
+                current = 'u'
+            elif p[0] < 346 and p[0] > 314:
+                current = 'i'    
+            elif p[0] < 378 and p[0] > 346:
+                current = 'o'
+            elif p[0] < 410 and p[0] > 378:
+                current = 'p'
+            elif p[0] < 450 and p[0] > 410:
+                current = k.backspace_key
+                #print output
+        else:
+            pass
+            #print '(%d, %d)' % (int(p[0]), int(p[1]))    
+    if current != '':
+        outputs.append(current)        
+    return outputs
+
+class kbd_event_handler():
+    def __init__(self):
+        self.state=[]
+    def __call__(self,keys):
+        for key in STATE:
+            if key not in keys:
+                k.release_key(key)
+        for key in keys:
+            if key not in STATE:
+                k.press_key(key)
+        self.state=keys
