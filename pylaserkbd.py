@@ -2,6 +2,12 @@
 import cv2
 import numpy as np
 import scipy as sp
+import time
+from pykeyboard import PyKeyboard
+
+k=PyKeyboard()
+
+
 
 class CAM():
     def __init__(self, camid, thresh=127, dilate_iterations=3):
@@ -30,15 +36,6 @@ class CAM():
         ret, th = cv2.threshold(gray, self.thresh, 255, cv2.THRESH_BINARY)
         dila = cv2.dilate(th, self.kernel, iterations=self.dilate_iterations)
         return dila
-    
-    def mapping(self, corner_position):
-        kb_high = corner_position[2][1] - corner_position[0][1]
-        kb_length = corner_position[1][0] - corner_position[0][0]
-        pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
-        pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high], [kb_length, kb_high]])
-        M = cv2.getPerspectiveTransform(pts1, pts2)
-        self.img = cv2.warpPerspective(self.img, M, (kb_length, kb_high))
-        return kb_length
 
     def retrieve(self):
         '''process the image and return a list contours and a list including tuples of characteristic point
@@ -93,21 +90,21 @@ def pause():
     return
 
 class configuration():
-    def __init__(self, camid):
-        self.key_fire_interval = 0.5  # seconds
+    def __init__(self, camid = 1):
         self.camid = camid
-        self.thresh = 127
-        self.dilate_iterations = 2
-        self.corner_position = [(1, 0), (2, 0.0)]
+        self.thresh = None
+        self.dilate_iterations = None
+        self.corner_position = None
 
     def config_CAM_parameters(self):
         check = 'n'
+        camid = input('Which camera do you need?(Enter [0] for PC cam, [1] for USB cam)')
         while check == 'n':
             thresh = input('Please input thresh light power:')
             dilate_iterations = input('Please input dilate interations:')
             print 'Please touch the laser keyboard.(press q to close the camera)'
             time.sleep(1)
-            cam = pylaserkbd.CAM(self.camid, thresh, dilate_iterations)
+            cam = CAM(camid, thresh, dilate_iterations)
             while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()
@@ -124,7 +121,7 @@ class configuration():
         for i in range(4):
             print 'Please put your finger at', corner[i]
             raw_input('Press enter if you are ready.')
-            cam = pylaserkbd.CAM(self.camid, self.thresh, self.dilate_iterations)
+            cam = CAM(self.camid, self.thresh, self.dilate_iterations)
             while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()
@@ -141,24 +138,28 @@ class configuration():
         self.config_CAM_parameters()
         self.mapping_calibration()
 
-    def save(self):
+    def save(self, filepath = None):
         # save configuration parameters to file
-        fout = open('config.cfg', 'w')
+        if not filepath:
+            filepath = 'config.cfg'
+        fout = open(filepath, 'w')
         parameters = ('key_fire_interval',
-                    'camid',
-                    'thresh',
-                    'dilate_iterations',
-                    'corner_position')
+                      'camid',
+                      'thresh',
+                      'dilate_iterations',
+                      'corner_position')
         for parameter in parameters:
             value = None
             exec("value=self.{0}".format(parameter))
             fout.write(parameter + ' = ' + str(value) + '\n')
         fout.close()
 
-    def load(self):
+    def load(self, filepath = None):
         # save configuration parameters to file
         try:
-            fin = open('config.cfg', 'r')
+            if not filepath:
+                filepath = 'config.cfg'
+            fin = open(filepath, 'r')
             for s in fin.readlines():
                 s = s.strip('\n').split('=')
                 exec('self.{0}={1}'.format(s[0], s[1]))
@@ -166,4 +167,109 @@ class configuration():
         except Exception as err:
             print err
             # raise assertion error
-            assert False, "config.cfg not found!!"
+            assert False, "File not found!!"
+
+def find_tone(func, charpts):
+    tones = [0]
+    ps = []    
+    for charpt in charpts:
+        if not(func(*charpt)[0] < 0 or func(*charpt)[0] > 300 or func(*charpt)[1] > 180 or func(*charpt)[1] < 0):
+            ps.append(func(*charpt))
+    for p in ps:
+        col = int(7 * p[0] / 300)
+        raw = int(2 * p[1] / 180)
+        tones.append(col)
+    return tones
+
+
+def find_kbd(func,charpts):
+    outputs=[]
+    kbds=[]
+    current=''
+    for charpt in charpts:
+        if not(func(*charpt)[0] < 0 or func(*charpt)[0] > 500 or func(*charpt)[1] > 300 or func(*charpt)[1] < 0):
+            kbds.append(func(*charpt))
+    for p in kbds:       
+        row = (5 * p[1] / 300)        
+        if row > 1 and row < 2:
+            if p[0] < 146 and p[0] > 114:
+                current = 'z'
+            elif p[0] < 178 and p[0] > 146:  
+                current = 'x'
+            elif p[0] < 210 and p[0] > 178:
+                current = 'c'
+            elif p[0] < 242 and p[0] > 210:
+                current = 'v'
+            elif p[0] < 274 and p[0] > 242:
+                current = 'b'
+            elif p[0] < 306 and p[0] > 274:
+                current = 'n'
+            elif p[0] < 338 and p[0] > 306:
+                current = 'm'
+        elif row > 2 and row < 3:
+            if p[0] < 131 and p[0] > 100:
+                current = 'a'
+            elif p[0] < 162 and p[0] > 131:  
+                current = 's'
+            elif p[0] < 193 and p[0] > 162:
+                current = 'd'
+            elif p[0] < 224 and p[0] > 193:
+                current = 'f'
+            elif p[0] < 255 and p[0] > 224:
+                current = 'g'
+            elif p[0] < 286 and p[0] > 255:
+                current = 'h'
+            elif p[0] < 317 and p[0] > 286:
+                current = 'j'
+            elif p[0] < 348 and p[0] > 317:
+                    current = 'k'    
+            elif p[0] < 380 and p[0] > 348:
+                    current = 'l'
+        elif row > 3 and row < 4:
+            if p[0] < 122 and p[0] > 90:
+                current = 'q'
+            elif p[0] < 154 and p[0] > 122:  
+                current = 'w'
+            elif p[0] < 186 and p[0] > 154:
+                current = 'e'
+            elif p[0] < 218 and p[0] > 186:
+                current = 'r'
+            elif p[0] < 250 and p[0] > 218:
+                current = 't'
+            elif p[0] < 282 and p[0] > 250:
+                current = 'y'
+            elif p[0] < 314 and p[0] > 282:
+                current = 'u'
+            elif p[0] < 346 and p[0] > 314:
+                current = 'i'    
+            elif p[0] < 378 and p[0] > 346:
+                current = 'o'
+            elif p[0] < 410 and p[0] > 378:
+                current = 'p'
+            elif p[0] < 450 and p[0] > 410:
+                current = k.backspace_key
+        else:
+            pass  
+    if current != '':
+        outputs.append(current)        
+    return outputs
+
+class kbd_event_handler():
+    def __init__(self):
+        self.state=[]
+    def __call__(self,keys):
+        for key in self.state:
+            if key not in keys:
+                k.release_key(key)
+        for key in keys:
+            if key not in self.state:
+                k.press_key(key)
+        self.state=keys
+
+class kbd_event_handler_single(kbd_event_handler):
+    def __call__(self,keys):
+        for key in keys:
+            if key not in self.state:
+                k.tap_key(key)
+        self.state=keys
+    

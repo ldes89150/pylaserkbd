@@ -7,14 +7,8 @@ import time
 import pylaserkbd
 import os
 
-def type_char(character):
-    #no implementaion now
-    print character
-    pass
-
 if __name__ == '__main__':
-    config = pylaserkbd.configuration(1)
-    config.save()
+    config = pylaserkbd.configuration(2)
     try:
         '''try to load the configuration from file.'''
         config.load()
@@ -24,6 +18,7 @@ if __name__ == '__main__':
         config.config_all()
         config.save()
     #use parameters in config to setup
+<<<<<<< HEAD
     cam = pylaserkbd.CAM(config.camid)
     func=pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
     
@@ -120,3 +115,17 @@ if __name__ == '__main__':
         print piano_tone
     '''
 
+=======
+    cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
+    func = pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
+    handler = pylaserkbd.kbd_event_handler_single()
+    while True:
+        cam.query()
+        charpts, contours = cam.retrieve()
+        cam.show()
+        keys=pylaserkbd.find_kbd(func,charpts)
+        handler(keys)
+        if cv2.waitKey(1) & 0xFF == ord('q'):
+            cam.close()
+            break
+>>>>>>> 95cb9abbb39438a5c722f98df77572f1fdc9f811

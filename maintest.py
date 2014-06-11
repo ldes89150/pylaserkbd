@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 import maintest
+=======
+import copy
+>>>>>>> 95cb9abbb39438a5c722f98df77572f1fdc9f811
 import time
 import pylaserkbd
 import cv2
@@ -18,7 +22,10 @@ def find_kbd(charpts, output, current_his):
             kbds.append(func(*charpt))
     for p in kbds:       
         row = (5 * p[1] / 300)        
+<<<<<<< HEAD
 
+=======
+>>>>>>> 95cb9abbb39438a5c722f98df77572f1fdc9f811
         if row > 1 and row < 2:
             if p[0] < 146 and p[0] > 114:
                 current = 'z'
@@ -78,7 +85,7 @@ def find_kbd(charpts, output, current_his):
                 del output[len(output) - 1]
                 print output
         else:
-                print '(%d, %d)' % (int(p[0]), int(p[1]))    
+            print '(%d, %d)' % (int(p[0]), int(p[1]))    
     if current != '' and current != current_his[0] :
         current_his[0] = current
         output.append(current)        
