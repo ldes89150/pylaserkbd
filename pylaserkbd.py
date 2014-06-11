@@ -36,15 +36,6 @@ class CAM():
         ret, th = cv2.threshold(gray, self.thresh, 255, cv2.THRESH_BINARY)
         dila = cv2.dilate(th, self.kernel, iterations=self.dilate_iterations)
         return dila
-    
-    def mapping(self, corner_position):
-        kb_high = corner_position[2][1] - corner_position[0][1]
-        kb_length = corner_position[1][0] - corner_position[0][0]
-        pts1 = np.float32([corner_position[0], corner_position[1], corner_position[2], corner_position[3]])
-        pts2 = np.float32([[0, 0], [kb_length, 0], [0, kb_high], [kb_length, kb_high]])
-        M = cv2.getPerspectiveTransform(pts1, pts2)
-        self.img = cv2.warpPerspective(self.img, M, (kb_length, kb_high))
-        return kb_length
 
     def retrieve(self):
         '''process the image and return a list contours and a list including tuples of characteristic point
@@ -100,7 +91,6 @@ def pause():
 
 class configuration():
     def __init__(self, camid = 1):
-        self.key_fire_interval = None  # seconds
         self.camid = camid
         self.thresh = None
         self.dilate_iterations = None
@@ -180,7 +170,6 @@ class configuration():
             assert False, "File not found!!"
 
 def find_tone(func, charpts):
-    
     tones = []
     ps = []    
     for charpt in charpts:
@@ -276,6 +265,7 @@ class kbd_event_handler():
             if key not in self.state:
                 k.press_key(key)
         self.state=keys
+
 class kbd_event_handler_single(kbd_event_handler):
     def __call__(self,keys):
         for key in keys:

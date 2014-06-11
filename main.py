@@ -26,7 +26,6 @@ if __name__ == '__main__':
         charpts, contours = cam.retrieve()
         cam.show()
         keys=pylaserkbd.find_kbd(func,charpts)
-        #print keys
         handler(keys)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cam.close()
