@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 import cv2
 import numpy as np
-import scipy as sp
 import time
 from pykeyboard import PyKeyboard
 
@@ -190,9 +189,14 @@ def find_kbd(func,charpts):
         if not(func(*charpt)[0] < 0 or func(*charpt)[0] > 500 or func(*charpt)[1] > 300 or func(*charpt)[1] < 0):
             kbds.append(func(*charpt))
     for p in kbds:       
-        row = (5 * p[1] / 300)        
-        if row > 1 and row < 2:
-            if p[0] < 146 and p[0] > 114:
+        row = (5 * (p[1]-10) / 300)        
+        if row < 1:
+            if p[0] < 338  and p[0] > 178:
+                current = ' '
+        elif row > 1 and row < 2:
+            if p[0] < 50 and p[0] > 0:
+                current = k.shift_key
+            elif p[0] < 146 and p[0] > 114:
                 current = 'z'
             elif p[0] < 178 and p[0] > 146:  
                 current = 'x'
@@ -206,6 +210,12 @@ def find_kbd(func,charpts):
                 current = 'n'
             elif p[0] < 338 and p[0] > 306:
                 current = 'm'
+            elif p[0] < 370 and p[0] > 338:
+                current = ','
+            elif p[0] < 402 and p[0] > 370:
+                current = '.'
+            elif p[0] < 467 and p[0] > 434:
+                current = '/'
         elif row > 2 and row < 3:
             if p[0] < 131 and p[0] > 100:
                 current = 'a'
@@ -225,6 +235,10 @@ def find_kbd(func,charpts):
                     current = 'k'    
             elif p[0] < 380 and p[0] > 348:
                     current = 'l'
+            elif p[0] < 412 and p[0] > 380:
+                    current = ';'
+            elif p[0] < 470 and p[0] > 412:
+                    current = k.enter_key 
         elif row > 3 and row < 4:
             if p[0] < 122 and p[0] > 90:
                 current = 'q'
@@ -248,6 +262,31 @@ def find_kbd(func,charpts):
                 current = 'p'
             elif p[0] < 450 and p[0] > 410:
                 current = k.backspace_key
+        elif row > 4 and row < 5:
+            if p[0] < 108 and p[0] > 80:
+                current = '1'
+            elif p[0] < 136 and p[0] > 108:  
+                current = '2'
+            elif p[0] < 165 and p[0] > 136:
+                current = '3'
+            elif p[0] < 193 and p[0] > 165:
+                current = '4'
+            elif p[0] < 221 and p[0] > 193:
+                current = '5'
+            elif p[0] < 250 and p[0] > 221:
+                current = '6'
+            elif p[0] < 278 and p[0] > 250:
+                current = '7'
+            elif p[0] < 306 and p[0] > 278:
+                current = '8'    
+            elif p[0] < 335 and p[0] > 306:
+                current = '9'
+            elif p[0] < 363 and p[0] > 335:
+                current = '0'
+            elif p[0] < 391 and p[0] > 363:
+                current = '-'
+            elif p[0] < 420 and p[0] > 391:
+                current = '='
         else:
             pass  
     if current != '':
