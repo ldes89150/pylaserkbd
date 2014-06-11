@@ -1,4 +1,4 @@
-pylaserkb
+pylaserkbd
 =========
 Bascally, this project comes from team RoboPeak's project, [laserkbd](https://github.com/robopeak/laserkbd). 
 In our project, we adopted the same hardware design as team RoboPeak's.
@@ -14,7 +14,7 @@ This makes our code be able to run on OS with Python and OpenCV.
 sudo apt-get install libopencv-dev python-numpy
 ```
 
-### python package
+### python packages
 #### [PyUserInput](https://github.com/SavinaRoja/PyUserInput)
 ```
 git clone https://github.com/SavinaRoja/PyUserInput.git
