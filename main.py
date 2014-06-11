@@ -9,7 +9,7 @@ import os
 
 
 if __name__ == '__main__':
-    config = pylaserkbd.configuration(1)
+    config = pylaserkbd.configuration(2)
     try:
         '''try to load the configuration from file.'''
         config.load()

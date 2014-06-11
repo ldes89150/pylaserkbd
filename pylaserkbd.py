@@ -6,7 +6,6 @@ import time
 from pykeyboard import PyKeyboard
 
 k=PyKeyboard()
-STATE = []
 
 
 
@@ -272,10 +271,18 @@ class kbd_event_handler():
     def __init__(self):
         self.state=[]
     def __call__(self,keys):
-        for key in STATE:
+        for key in self.state:
             if key not in keys:
                 k.release_key(key)
         for key in keys:
-            if key not in STATE:
+            if key not in self.state:
+                #k.type_string(key)
                 k.press_key(key)
         self.state=keys
+class kbd_event_handler_single(kbd_event_handler):
+    def __call__(self,keys):
+        for key in keys:
+            if key not in self.state:
+                k.tap_key(key)
+        self.state=keys
+    
