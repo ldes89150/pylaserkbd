@@ -259,10 +259,8 @@ def find_kbd(func,charpts):
                 current = 'p'
             elif p[0] < 450 and p[0] > 410:
                 current = k.backspace_key
-                #print output
         else:
-            pass
-            #print '(%d, %d)' % (int(p[0]), int(p[1]))    
+            pass  
     if current != '':
         outputs.append(current)        
     return outputs
@@ -276,7 +274,6 @@ class kbd_event_handler():
                 k.release_key(key)
         for key in keys:
             if key not in self.state:
-                #k.type_string(key)
                 k.press_key(key)
         self.state=keys
 class kbd_event_handler_single(kbd_event_handler):
