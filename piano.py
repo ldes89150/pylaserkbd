@@ -5,9 +5,6 @@ import time
 import pylaserkbd
 import os
 
-global HISTORY_TONE
-HISTORY_TONE = 0
-
 config = pylaserkbd.configuration()
 try:
     '''try to load the configuration from file.'''
@@ -20,6 +17,8 @@ except AssertionError:
 #use parameters in config to setup
 cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
 board = Arduino('9600', port = "")
+HISTORY_TONE = 0
+pitch = ['Do', 'Re', 'Me', 'Fa', 'Sol', 'La', 'Si']
 while(True):
     cam.query()
     charpts, contours = cam.retrieve()
@@ -31,8 +30,7 @@ while(True):
         board.digitalWrite(tone, 'HIGH')
         if HISTORY_TONE != tone:
             board.digitalWrite(HISTORY_TONE, 'LOW')
-            print 'Stop'
-        print 'Sing', tones[1] + 1
+            print pitch[tones[1]]
         HISTORY_TONE = tone
     elif HISTORY_TONE != -1:
         board.digitalWrite(HISTORY_TONE, 'LOW')
