@@ -25,15 +25,17 @@ while(True):
     func = pylaserkbd.make_mapping_function_pianomode(config.corner_position)
     tones = pylaserkbd.find_tone(func, charpts)
     if len(tones) >= 2:
-        tone = tones[1] + 2
+        tone = 8 - tones[1]
         board.pinMode(tone, 'OUTPUT')
         board.digitalWrite(tone, 'HIGH')
         if HISTORY_TONE != tone:
             board.digitalWrite(HISTORY_TONE, 'LOW')
+            board.pinMode(HISTORY_TONE, 'INPUT')
             print pitch[tones[1]]
         HISTORY_TONE = tone
     elif HISTORY_TONE != -1:
         board.digitalWrite(HISTORY_TONE, 'LOW')
+        board.pinMode(HISTORY_TONE, 'INPUT')
         print 'Stop'
         HISTORY_TONE = -1
     cam.show()
