@@ -98,7 +98,7 @@ class configuration():
     def config_CAM_parameters(self):
         check = 'n'
         while check == 'n':
-			self.camid = input('Which camera do you need?(Enter [0] for PC cam, [1] for USB cam)')
+            self.camid = input('Which camera do you need?(Enter [0] for PC cam, [1] for USB cam)')
             thresh = input('Please input thresh light power:')
             dilate_iterations = input('Please input dilate interations:')
             print 'Please touch the laser keyboard.(press q to close the camera)'
