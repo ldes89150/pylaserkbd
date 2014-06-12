@@ -21,7 +21,7 @@ if __name__ == '__main__':
 
     cam = pylaserkbd.CAM(config.camid, config.thresh, config.dilate_iterations)
     func = pylaserkbd.make_mapping_function_kbdmode(config.corner_position)
-    handler = pylaserkbd.kbd_event_handler_single()
+    handler = pylaserkbd.kbd_event_handler()
     while True:
         cam.query()
         charpts, contours = cam.retrieve()

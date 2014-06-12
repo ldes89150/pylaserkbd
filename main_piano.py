@@ -24,7 +24,7 @@ if __name__ == '__main__':
         charpts, contours = cam.retrieve()
         func = pylaserkbd.make_mapping_function_pianomode(config.corner_position)
         tones = pylaserkbd.find_tone(func, charpts)
-        print tones
+        #print tones
         cam.show()
         if cv2.waitKey(1) & 0xFF == ord('q'):
             break
