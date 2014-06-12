@@ -89,7 +89,7 @@ def pause():
     return
 
 class configuration():
-    def __init__(self, camid):
+    def __init__(self):
         self.camid = None
         self.thresh = None
         self.dilate_iterations = None
