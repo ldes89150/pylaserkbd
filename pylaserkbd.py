@@ -89,21 +89,21 @@ def pause():
     return
 
 class configuration():
-    def __init__(self, camid = 1):
-        self.camid = camid
+    def __init__(self, camid):
+        self.camid = None
         self.thresh = None
         self.dilate_iterations = None
         self.corner_position = None
 
     def config_CAM_parameters(self):
         check = 'n'
-        camid = input('Which camera do you need?(Enter [0] for PC cam, [1] for USB cam)')
+        self.camid = input('Which camera do you need?(Enter [0] for PC cam, [1] for USB cam)')
         while check == 'n':
             thresh = input('Please input thresh light power:')
             dilate_iterations = input('Please input dilate interations:')
             print 'Please touch the laser keyboard.(press q to close the camera)'
             time.sleep(1)
-            cam = CAM(camid, thresh, dilate_iterations)
+            cam = CAM(self.camid, thresh, dilate_iterations)
             while(True):
                 cam.query()
                 charpts, contours = cam.retrieve()

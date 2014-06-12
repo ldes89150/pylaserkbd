@@ -8,7 +8,7 @@ import pylaserkbd
 import os
 
 if __name__ == '__main__':
-    config = pylaserkbd.configuration(2)
+    config = pylaserkbd.configuration()
     try:
         '''try to load the configuration from file.'''
         config.load()
