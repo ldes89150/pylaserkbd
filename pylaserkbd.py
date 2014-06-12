@@ -93,7 +93,7 @@ class configuration():
         self.camid = None
         self.thresh = None
         self.dilate_iterations = None
-        self.corner_position = None
+        self.corner_position = []
 
     def config_CAM_parameters(self):
         check = 'n'
@@ -129,7 +129,8 @@ class configuration():
                     break
             cam.close()
             print 'Ok, you can leave yuor finger.'
-            self.corner_position.append(charpts)
+            charpt = charpts[0]
+            self.corner_position.append((charpt[0], charpt[1]))
         print self.corner_position
         print 'Calibration done.'
         
@@ -142,8 +143,7 @@ class configuration():
         if not filepath:
             filepath = 'config.cfg'
         fout = open(filepath, 'w')
-        parameters = ('key_fire_interval',
-                      'camid',
+        parameters = ('camid',
                       'thresh',
                       'dilate_iterations',
                       'corner_position')
